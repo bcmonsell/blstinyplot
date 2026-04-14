@@ -1,0 +1,104 @@
+#' Get names of regressors
+#'
+#' Generate string of names for the regressors used in the model fit for a given series.
+#'
+#' Version 1.1, 2026-04-07
+#'
+#' @param seas_obj A seas object for a single series generated from the 
+#'        \code{seasonal} package \insertCite{seasonal2018}{blstinyplot}.
+#'        This is a required entry.
+#' @param xreg_names Character vector with names of user defined regressors used in model. 
+#'        Default is \code{NULL}, no user defined regressors. 
+#'        Number of names in this vector should match number of user-defined regressors; 
+#'        if not, a warning message will be produced.
+#' @param exclude_user Logical scalar; determines if user defined regressors are 
+#'        included in the string of regression names output by the function.
+#'        Default is \code{FALSE}
+#' @return Character string containing a summary of the regressors in the regARIMA model. 
+#'         If no regressors in the model, the routine will return a blank character.
+#'
+#' @author Brian C. Monsell, \email{monsell.brian@@bls.gov} or \email{bcmonsell@@gmail.com}
+#'
+#' @references
+#'  \insertAllCited{}
+#'
+#' @examples 
+#' air_seas <- 
+#'    seasonal::seas(AirPassengers, 
+#'                   transform.function = "log", 
+#'                   forecast.maxlead=36, 
+#'                   check.print = c( "pacf", "pacfplot" ), 
+#'                   x11 = "", slidingspans = "")
+#' air_reg <- get_reg_string(air_seas)
+#' @importFrom Rdpack reprompt
+#' @export
+get_reg_string <- 
+   function(seas_obj = NULL, 
+            xreg_names = NULL, 
+            exclude_user = FALSE) {
+    # Author: Brian C. Monsell (OEUS) Version 1.1, 2026-04-07
+    
+    # check if a value is specified for \code{seas_obj}
+    if (is.null(seas_obj)) {
+        stop("must specify a seas object")
+    } else {
+    # check if a seas object is specified for \code{seas_obj}
+        if (!inherits(seas_obj, "seas")) {
+           stop("First argument must be a seas object")
+        }
+    }
+    
+    # Extract number of regressors, number of user defined regressors
+    this_nreg <- seasonal::udg(seas_obj, "nreg")
+	this_nureg <- ncol(seas_obj$list$xreg)
+	if (is.null(this_nureg)) { 
+		this_nureg <- 0 
+	}
+	
+	if (exclude_user) {
+		this_nreg <- this_nreg - this_nureg
+	}
+    
+    # Initialize string of regressor names
+    reg_string <- " "
+    
+    # If number of regressors greater than zero, get index of \code{nreg} keyword in UDG output
+    if (this_nreg > 0) {
+        this_reg_index <- get_udg_index(seasonal::udg(seas_obj), "nreg")
+        
+        # split keywords into regressor names and types
+        reg_names <- names(seas_obj$udg)[seq(1, this_nreg) + this_reg_index]
+        reg_vec <- unlist(strsplit(reg_names, "[$]"))[seq(2, 2 * this_nreg, 2)]
+		
+        # if names for the user-defined regressors are supplied, set number of user defined 
+        # regressor names
+        if (!is.null(xreg_names)) {
+            num_xreg_names <- length(xreg_names)
+            
+            # generate filter indicating which regressors are user defined regressors 
+            # from the UDG output
+            if (num_xreg_names > 1) {
+                xreg_filter <- reg_vec %in% paste("xreg", seq(1, num_xreg_names), sep = "")
+            } else {
+                xreg_filter <- reg_vec %in% "xreg"
+            }
+            
+            # if more than one user defined regressor, check to see if the number of user defined 
+            # regressors match the number of names, then set the names of the user defined 
+            # regressors else print out warning message
+            if (sum(xreg_filter) > 0) {
+                if (sum(xreg_filter) == num_xreg_names) {
+                    reg_vec[xreg_filter] <- xreg_names
+                } else {
+                    warning(paste0("Number of names for user-defined regressors doesn't match ",
+                                   "number of user-defined regressors"))
+                }
+            }
+        }
+        
+        # create string of regressors from vector \code{reg_vec}
+        reg_string <- paste(reg_vec, collapse = " ")
+    }
+    
+    return(reg_string)
+}

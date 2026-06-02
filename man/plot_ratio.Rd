@@ -84,7 +84,7 @@ by default.
 Generates a high-definition plot around a reference line other than zero.
 }
 \details{
-Version 1.5, 2026-04-02
+Version 1.5.1, 2026-05-21
 }
 \examples{
 air_seas <-   
@@ -96,6 +96,9 @@ air_sf <- seasonal::series(air_seas, 's10')
 plot_ratio(air_sf,  
      main_title = 'SEATS seasonal for Airline Passenger',  
      ratio_color = 'darkblue')
+}
+\references{
+\insertAllCited{}
 }
 \author{
 Brian C. Monsell, \email{monsell.brian@bls.gov} or \email{bcmonsell@gmail.com}

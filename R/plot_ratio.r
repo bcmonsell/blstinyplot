@@ -2,7 +2,7 @@
 #'
 #' Generates a high-definition plot around a reference line other than zero.
 #'
-#' Version 1.5, 2026-04-02
+#' Version 1.5.1, 2026-05-21
 #'
 #' @param ratio_series Time series of ratios/factors for which you want to 
 #'        generate a high definition plot.
@@ -43,6 +43,9 @@
 #'
 #' @author Brian C. Monsell, \email{monsell.brian@@bls.gov} or \email{bcmonsell@@gmail.com}
 #'
+#' @references
+#'  \insertAllCited{}
+#'
 #' @examples
 #' air_seas <-   
 #'     seasonal::seas(AirPassengers,  
@@ -55,6 +58,7 @@
 #'      ratio_color = 'darkblue')
 #' @import graphics
 #' @import stats
+#' @importFrom Rdpack reprompt
 #' @export
 plot_ratio <- 
     function(ratio_series = NULL, 
@@ -74,7 +78,7 @@ plot_ratio <-
 	         this_axis_cex = NULL,  
 	         this_mar = c(4,4,4,0.5),  
 	         this_reset = TRUE) {
-    # Author: Brian C. Monsell (OEUS) Version 1.5, 2026-04-02
+    # Author: Brian C. Monsell (OEUS) Version 1.5.1, 2026-05-21
 
     # check if \code{ratio_series} is specified
     if (is.null(ratio_series)) {

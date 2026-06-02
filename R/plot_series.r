@@ -65,7 +65,8 @@
 #' @param this_reset Logical scalar; if TRUE, the values of \code{par} are reset. 
 #'        Default is \code{TRUE}.
 #' @return Generate plot of user-specified series. Can be first in a series 
-#'         of plots, with other lines or points added after calling this routine. If series not specified, print out error message and return NULL.
+#'         of plots, with other lines or points added after calling this routine. 
+#'         If series not specified, print out error message and return NULL.
 #'
 #' @author Brian C. Monsell, \email{monsell.brian@@bls.gov} or \email{bcmonsell@@gmail.com}
 #'

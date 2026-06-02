@@ -5,7 +5,7 @@
 #'
 #' Version 1.5, 2026-04-08
 #'
-#' @param seas_obj A seas object for a single series generated from the 
+#' @param seas_obj A \code{seas} object for a single series generated from the 
 #'        \code{seasonal} package \insertCite{seasonal2018}{blstinyplot}.
 #'        This is a required entry.
 #' @param this_table Character string; X-13ARIMA-SEATS table name or abbreviation. 

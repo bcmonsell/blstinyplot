@@ -39,7 +39,7 @@ plot_table(
 )
 }
 \arguments{
-\item{seas_obj}{A seas object for a single series generated from the
+\item{seas_obj}{A \code{seas} object for a single series generated from the
 \code{seasonal} package \insertCite{seasonal2018}{blstinyplot}.
 This is a required entry.}
 
